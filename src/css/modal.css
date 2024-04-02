@@ -1,0 +1,31 @@
+.modal-h1{
+    font-size: 2rem;
+    font-weight: bold;
+    background-image: linear-gradient(to bottom, #4C4468, #9787CE);
+    background-clip: text;
+    color: transparent;
+}
+
+.modal-label{
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.modal-input{
+    border: none;
+    background-color: #F2F2F2;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 7px;
+    margin-bottom: 1rem;
+}
+
+.submit-process-btn{
+    border: none;
+    padding: 0.5rem;
+    border-radius: 7px;
+    background: linear-gradient(to bottom, #4C4468, #9787CE);
+    color: white;
+    font-weight: 500
+}

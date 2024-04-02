@@ -1,0 +1,29 @@
+.nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem;
+}
+
+.nav .logo-box{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.nav .logo-box h4{
+    color: #4C4468;
+    font-weight: 900;
+    font-style: italic;
+}
+
+.nav button{
+    padding: 1rem;
+    border: none;
+    background: linear-gradient(to bottom, #4C4468, #9787CE);
+    border-radius: 7px;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+}

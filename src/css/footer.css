@@ -1,0 +1,13 @@
+.footer{
+    width: 100%;
+    /* height: 6%; */
+    background: linear-gradient(to bottom, #4C4468, #9787CE);
+    padding: 1rem;
+}
+
+.footer h5{
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    text-align: left;
+}
