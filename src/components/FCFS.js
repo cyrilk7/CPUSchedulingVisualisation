@@ -6,45 +6,38 @@ import { useState, useEffect, useRef } from "react";
 
 
 
-function runFCFS(readyQueue, setReadyQueue, setGanttChart) {
-    let queueCopy = [...readyQueue];
-    let ganttChartCopy = [];
-    let executionTime = 10000;
-
-    setTimeout(() => {
-        if (queueCopy.length > 0) {
-            const next = queueCopy.shift()
-            setReadyQueue(queueCopy);
-        }
-    }, executionTime);
-}
-
 
 
 const FCFS = () => {
     const location = useLocation();
     let processes = location.state?.processes;
+    let setProcesses;
     const updatedProcesses = processes.map((process, index) => ({ ...process, index }));
-    const [executionStarted, setExecutionStarted] = useState(false);
+    const [seconds, setSeconds] = useState(0);
+    const [offset, setOffset] = useState(0);
+    const [begin, setBegin] = useState(false);
+    const [lastAddedIndex, setLastAddedIndex] = useState(-1);
+    const [isProcessRunning, setIsProcessRunning] = useState(false);
+
 
     // Sort processes based on arrival time for display
     const sortedProcesses = updatedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
+    [processes, setProcesses] = useState(sortedProcesses);
 
-    const [data, setData] = useState(sortedProcesses);
-    let queueCopy = [...data];
-    const [queue, setQueue] = useState(queueCopy);
-    const [ganttChart, setGanttChart] = useState(null);
+    const [data, setData] = useState([]);
+    const [ganttChart, setGanttChart] = useState([]);
     const svgRef = useRef(null);
-    const width = 700;
-    const height = 100;
-    const totalBurstTime = data.reduce((acc, obj) => acc + obj.burstTime, 0);
-    const xScale = scaleLinear().domain([0, totalBurstTime]).range([0, width]);
-    const yScale = scaleLinear().domain([0, height]).range([0, height]);
+    const ganttRef = useRef(null);
 
 
     const renderQueue = (data) => {
+        const width = 700;
+        const height = 100;
+        const totalBurstTime = data.reduce((acc, obj) => acc + obj.burstTime, 0);
+        const xScale = scaleLinear().domain([0, totalBurstTime]).range([0, width]);
         const svg = select(svgRef.current);
         svg.attr('width', width).attr('height', height);
+
         const bars = svg.selectAll('rect').data(data);
 
         let cumulativeX = 0;
@@ -60,7 +53,7 @@ const FCFS = () => {
             .attr('x', width) // Start from the right edge of the SVG
             .attr('height', height)
             .attr('width', d => xScale(d.burstTime))
-            .attr('y', height - height)
+            .attr('y', 0)
             .attr('fill', (d, i) => i % 2 === 0 ? '#9787CE' : '#F2F2F2 ')
             .transition()
             .duration(500) // Duration of the transition in milliseconds
@@ -97,49 +90,163 @@ const FCFS = () => {
 
     }
 
+    const renderGantt = (data, processes) => {
+        const totalBurstTime = processes.reduce((acc, obj) => acc + obj.burstTime, 0);
+        const ganttWidth = 1200;
+        const height = 200;
+        const gannttXscale = scaleLinear().domain([0, totalBurstTime]).range([0, ganttWidth]);
+
+        const svg = select(ganttRef.current);
+        svg.attr('width', ganttWidth).attr('height', height);
+        const bars = svg.selectAll('rect').data(data);
+
+        let cumulativeX = 0;
+        data.forEach((d, i) => {
+            d.xPosition = cumulativeX;
+            cumulativeX += gannttXscale(d.burstTime); // Increase cumulative position by the width of the current bar
+        });
+
+        // Update existing bars with transition
+        bars.enter()
+            .append('rect')
+            .attr('height', height)
+            .attr('y', height - height)
+            .attr('fill', (d, i) => {
+                return i === lastAddedIndex ? 'red' : '#9787CE';
+            })
+            .merge(bars)
+            .transition()
+            .duration(500) // Duration of the transition in milliseconds
+            .attr('width', d => gannttXscale(d.burstTime))
+            .attr('x', d => d.xPosition); // Animate to the correct x-position
+
+        // Remove bars that are no longer needed
+        bars.exit().remove();
+
+        if (data.length > 0) {
+            setLastAddedIndex(data.length - 1);
+        }
+
+        // Add labels inside the middle of the squares
+        const labelOffsetX = 2; // Offset for x-coordinate
+        const labelOffsetY = height / 2; // Offset for y-coordinate
+        const values = svg.selectAll('.value').data(data);
+
+        values.enter()
+            .append('text')
+            .attr('y', labelOffsetY) // Adjust the y-position of the label
+            .attr('text-anchor', 'middle') // Center the text horizontally
+            .attr('class', 'value')
+            .attr('alignment-baseline', 'middle') // Center the text vertically
+            .attr('fill', 'black') // Set label color
+            .attr('font-weight', 'bold') // Set font weight to bold
+            // Start from the right edge of the SVG
+            .text((d) => "P" + d.index) // Set the initial text content of the label
+            .merge(values)
+            // .attr('x', d => d.xPosition + (gannttXscale(d.burstTime) / 2) ) // Animate to the correct x-position
+            .transition()
+            .duration(500) // Duration of the transition in milliseconds
+            .attr('x', (d) => d.xPosition + (gannttXscale(d.burstTime) / 2));
+
+
+        // Remove bars that are no longer needed
+        values.exit().remove();
+    }
+
+
+
     const removeFirstElement = () => {
-        setData(prevData => prevData.slice(1)); // Remove the first element
+        if (data.length > 0) {
+            const executedProcess = data[0]; // Get the first process in the ready queue
+            setGanttChart(prevChart => [...prevChart, executedProcess]); // Add executed process to Gantt chart
+            setData(prevQueue => prevQueue.slice(1)); // Remove the executed process from the ready queue
+            return executedProcess;
+        }
     };
 
 
+
+    useEffect(() => {
+        const executeProcess = () => {
+            if (!isProcessRunning && data.length > 0) {
+                const nextProcess = removeFirstElement();
+                setIsProcessRunning(true);
+
+                setTimeout(() => {
+                    setIsProcessRunning(false); // Process execution completes
+                }, nextProcess.burstTime * 1000); // Simulate burst time in seconds (multiply by 1000 for milliseconds)
+            }
+        };
+
+
+        const queueChangeTimer = setInterval(() => {
+            executeProcess(); // Check for process execution on every interval
+        }, 1000);
+
+        return () => clearInterval(queueChangeTimer);
+    }, [isProcessRunning, data])
+
+    useEffect(() => {
+        const delaySeconds = 3; // Delay in seconds before timer starts
+
+        // Set a timeout to start the timer after the delay
+        const delayTimeout = setTimeout(() => {
+            setBegin(true) // Start the timer at 0 after the delay
+        }, delaySeconds * 1000); // Convert delaySeconds to milliseconds
+
+        // Cleanup function to clear the timeout if component unmounts or timer starts
+        return () => clearTimeout(delayTimeout);
+    }, []);
 
     useEffect(() => {
         renderQueue(data);
     }, [data]);
 
 
+    useEffect(() => {
+        console.log(ganttChart)
+        renderGantt(ganttChart, processes);
+    }, [ganttChart]);
 
     useEffect(() => {
-        let queueCopy = [...data];
-        let ganttChartCopy = [];
-        let executionTime = 10000;
-        var next;
 
-        // Function to process the next element after a specified delay
-        const processNext = () => {
-            if (queueCopy.length > 0) {
-                next = queueCopy.shift();
-                setTimeout(processNext, next.burstTime * 1000);
-                // Update state to remove the processed element from the queue
-                setData(queueCopy);
-                // Add the processed element to the Gantt chart
-                ganttChartCopy.push(next);
-                setGanttChart(ganttChartCopy);
+        if (begin) {
+            const intervalId = setInterval(() => {
+                setSeconds(prevSeconds => prevSeconds + 1);
+            }, 1000);
 
-                // Schedule the next execution based on the burst time of the processed element
+            return () => clearInterval(intervalId);
+        }
+    }, [begin]);
+
+    useEffect(() => {
+        // Function to add processes to the ready queue based on arrival time
+        const addProcessesToReadyQueue = () => {
+            // Iterate over processes starting from the offset
+            for (let i = offset; i < processes.length; i++) {
+                const currentProcess = processes[i];
+                // Check if the current process's arrival time matches the timer
+                if (currentProcess.arrivalTime === seconds) {
+                    // Add the process to the ready queue
+                    setData(prevQueue => [...prevQueue, currentProcess]);
+                    // Update the offset to skip processed processes
+                    setOffset(i + 1);
+                } else if (currentProcess.arrivalTime > seconds) {
+                    // Since processes array is sorted by arrival time,
+                    // no need to check further if arrival time is in future
+                    break;
+                }
             }
         };
 
-        // Wait for 10 seconds before setting the execution started signal
-        const initialTimeout = setTimeout(() => {
-            setExecutionStarted(true);
-            console.log("Statrted");
-            processNext(); // Start the actual execution
-        }, executionTime);
+        // Call addProcessesToReadyQueue on each timer tick
+        addProcessesToReadyQueue();
+    }, [seconds, data]);
 
-        // Clean up the initial timeout to prevent it from executing after the component unmounts
-        return () => clearTimeout(initialTimeout);
-    }, [data]);
+
+
+
+
 
 
     return (
@@ -151,12 +258,18 @@ const FCFS = () => {
                 </div>
 
                 <div className="FCFS-top-right">
+                    <h2 className='timer'>Timer:  <span> {seconds} seconds </span> </h2>
                     <h4> Ready Queue </h4>
                     <div className="queue-container">
                         <svg ref={svgRef} className="queue" width="700" height="450"></svg>
                     </div>
                     <button onClick={removeFirstElement}>Remove First Element</button>
 
+                </div>
+            </div>
+            <div className="FCFS-bottom">
+                <div className="gantt-box">
+                    <svg id='ganttChartContainer' ref={ganttRef} className="queue" width="700" height="450"></svg>
                 </div>
             </div>
 

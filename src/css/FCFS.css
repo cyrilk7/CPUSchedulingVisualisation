@@ -41,3 +41,31 @@
     font-weight: bold;
     
 }
+
+.timer{
+    text-align: left;
+    margin-bottom: 1rem;
+    background-image: linear-gradient(to bottom, #4C4468, #9787CE);
+    background-clip: text;
+    color: transparent;
+    font-weight: bold;
+}
+
+.timer span{
+    color: black;
+    font-weight: 500;
+}
+
+.FCFS-bottom{
+    /* border: 1px solid red; */
+    margin-top: 3rem;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.FCFS-bottom .gantt-box{
+    /* border: 1px solid black; */
+}
