@@ -112,13 +112,21 @@ const FCFS = () => {
             .attr('height', height)
             .attr('y', height - height)
             .attr('fill', (d, i) => {
-                return i === lastAddedIndex ? 'red' : '#9787CE';
+                if (i === data.length - 1) {
+
+                    return 'red'
+                } else {
+                    // Bars that are not the last added: Set purple color
+                    return '#9787CE';
+                }
             })
             .merge(bars)
             .transition()
             .duration(500) // Duration of the transition in milliseconds
             .attr('width', d => gannttXscale(d.burstTime))
             .attr('x', d => d.xPosition); // Animate to the correct x-position
+
+        bars.attr('fill', (d, i) => i === data.length - 1 ? 'red' : '#9787CE');
 
         // Remove bars that are no longer needed
         bars.exit().remove();
