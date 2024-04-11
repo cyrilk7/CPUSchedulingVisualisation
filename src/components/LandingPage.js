@@ -8,12 +8,26 @@ import ProcesssModal from "../components/ProcessModal.js";
 import "../css/landing.css";
 
 
+const redirectMap = {
+    FCFS: "/fcfs",
+    SJN: "/sjn",
+    RR: "/rr",
+    MLF: "/MLF"
+};
+
 const LandingPage = () => {
     const [showModal, setShowModal] = useState(false);
+    const [currentAlgorithm, setCurrentAlgorithm] = useState(null);
 
 
-    const handleButtonClick = () => {
+    const handleModalOpen = (process) => {
+        setCurrentAlgorithm(process);
         setShowModal(true);
+    };
+
+    const handleModalClose = () => {
+        setCurrentAlgorithm(null);
+        setShowModal(false);
     };
 
     return (
@@ -23,7 +37,6 @@ const LandingPage = () => {
                     <h1>CPU Scheduling <br /> & Visualisation Tool </h1>
                     <h5> The CPU Scheduling Visualization Tool aims to provide a user-friendly interface for visualizing and analyzing the execution of CPU scheduling algorithms. </h5>
                     <Link to="select-algo" smooth={true} duration={500}>
-                        {/* Scroll to Section 1 */}
                         <button> Get Started </button>
                     </Link>
                 </div>
@@ -37,16 +50,32 @@ const LandingPage = () => {
             <section id="select-algo">
                 <h2> Select a Scheduling Algorithm </h2>
                 <div className="algo-container">
-                    <Button variant="primary" onClick={handleButtonClick}>
-                       First Come First Serve
+                    <Button variant="primary" onClick={() => handleModalOpen("FCFS")}>
+                        First Come First Serve
                     </Button>
-                    {/* <button> First Come First Serve </button> */}
-                    <button> First Come First Serve </button>
-                    <button> First Come First Serve </button>
-                    <button> First Come First Serve </button>
+
+                    <Button variant="primary" onClick={() => handleModalOpen("SJN")}>
+                        Shortest Job Next
+                    </Button>
+
+                    <Button variant="primary" onClick={() => handleModalOpen("RR")}>
+                        Round Robin
+                    </Button>
+
+                    <Button variant="primary" onClick={() => handleModalOpen("MLF")}>
+                        MLF
+                    </Button>
+
+
+
                 </div>
 
-                {showModal && <ProcesssModal onClose={() => setShowModal(false)} />} 
+                {showModal && (
+                    <ProcesssModal
+                        onClose={handleModalClose}
+                        redirectPage={redirectMap[currentAlgorithm]}
+                    />
+                )}
                 <Footer />
 
 

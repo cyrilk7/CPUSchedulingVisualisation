@@ -3,12 +3,9 @@ import { useState, useEffect } from 'react';
 
 
 const ProcessTable = ({ processes }) => {
-    // Create a copy of the processes array to maintain the original order
-    const updatedProcesses = processes.map((process, index) => ({ ...process, index }));
-    // console.log(updatedProcesses);
 
-    // Sort processes based on arrival time for display
-    const sortedProcesses = updatedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
+    const sortedProcesses = processes;
+
 
     // Calculate turnaround times
     let currentTime = 0;

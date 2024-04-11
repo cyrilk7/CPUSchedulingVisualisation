@@ -1,8 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import ProcessTable from '../components/ProcessTable';
 import "../css/FCFS.css";
-import { select, scaleLinear, max } from "d3";
-import * as d3 from 'd3';
+import { select, scaleLinear } from "d3";
 import { useState, useEffect, useRef } from "react";
 
 
@@ -11,15 +10,15 @@ import { useState, useEffect, useRef } from "react";
 
 const FCFS = () => {
     const location = useLocation();
-    let processes = location.state?.processes;
-    let setProcesses;
-    const updatedProcesses = processes.map((process, index) => ({ ...process, index }));
+    let myProcesses = location.state?.processes;
+    const updatedProcesses = myProcesses.map((process, index) => ({ ...process, index }));
+    const sortedProcesses = updatedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
+    const [processes, setProcesses] = useState(sortedProcesses);
+
     const [seconds, setSeconds] = useState(0);
     const [offset, setOffset] = useState(0);
     const [begin, setBegin] = useState(false);
     const [isProcessRunning, setIsProcessRunning] = useState(false);
-    const sortedProcesses = updatedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
-    [processes, setProcesses] = useState(sortedProcesses);
 
     const [data, setData] = useState([]);
     const [ganttChart, setGanttChart] = useState([]);
@@ -105,29 +104,23 @@ const FCFS = () => {
 
         // Update existing bars with transition
         bars.enter()
-        .append('rect')
-        .attr('height', height)
-        .attr('y', height - height)
-        .merge(bars)
-        .transition()
-        .duration(500) // Duration of the transition in milliseconds
-        .attr('width', d => gannttXscale(d.burstTime))
-        .attr('x', d => d.xPosition) // Animate to the correct x-position
-        .attr('fill', (d, i) => {
-            if (i === data.length - 1) {
-                // Calculate the proportion of burst time completed
-                const elapsedTime = Math.min(d.elapsedTime || 0, d.burstTime);
-                const proportionComplete = elapsedTime / d.burstTime;
-                // Use a gradient for the fill (red to white)
-                // return `linear-gradient(to right, red ${proportionComplete * 100}%, white ${proportionComplete * 100}%)`;
-                return '#90CCB3'
-            } else {
-                // Bars that are not the last added: Set purple color
-                return '#9787CE';
-            }
-        })        
-        .attr('stroke', 'black') // Set border color
-        .attr('stroke-width', 2); // Set border width
+            .append('rect')
+            .attr('height', height)
+            .attr('y', height - height)
+            .merge(bars)
+            .transition()
+            .duration(500) // Duration of the transition in milliseconds
+            .attr('width', d => gannttXscale(d.burstTime))
+            .attr('x', d => d.xPosition) // Animate to the correct x-position
+            .attr('fill', (d, i) => {
+                if (i === data.length - 1) {
+                    return '#90CCB3'
+                } else {
+                    return '#9787CE';
+                }
+            })
+            .attr('stroke', 'black') // Set border color
+            .attr('stroke-width', 2); // Set border width
 
 
         data.forEach(d => {
@@ -144,12 +137,8 @@ const FCFS = () => {
             }
         });
 
-        // bars.enter().attr('fill', 'purple')
-
-
         // Remove bars that are no longer needed
         bars.exit().remove();
-
 
         // Add labels inside the middle of the squares
         const labelOffsetX = 2; // Offset for x-coordinate
@@ -266,10 +255,6 @@ const FCFS = () => {
         // Call addProcessesToReadyQueue on each timer tick
         addProcessesToReadyQueue();
     }, [seconds, data]);
-
-
-
-
 
 
 

@@ -9,6 +9,7 @@ import { get } from 'react-scroll/modules/mixins/scroller';
 
 function ProcesssModal(props) {
     const [show, setShow] = useState(true);
+    const { onClose, redirectPage } = props;
     const [numProcesses, setNumProcesses] = useState(1);
     const [processes, setProcesses] = useState([{ arrivalTime: 0, burstTime: 0 }]);
     const navigate = useNavigate();
@@ -34,9 +35,7 @@ function ProcesssModal(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Process the data here (e.g., simulation)
-        // console.log(processes);
-        navigate('/fcfs', { state: { processes: processes } });
+        navigate(redirectPage, { state: { processes: processes } });
     };
 
 
