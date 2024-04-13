@@ -6,8 +6,6 @@ import { useState, useEffect, useRef } from "react";
 
 
 
-
-
 const FCFS = () => {
     const location = useLocation();
     let myProcesses = location.state?.processes;
