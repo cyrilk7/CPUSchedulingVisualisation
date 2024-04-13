@@ -8,7 +8,7 @@ const ProcessTable = ({ processes }) => {
 
 
     // Calculate turnaround times
-    let currentTime = 0;
+    let currentTime = sortedProcesses[0].arrivalTime;
     sortedProcesses.forEach(process => {
         process.turnaroundTime = currentTime + process.burstTime - process.arrivalTime;
         currentTime += process.burstTime;
@@ -52,7 +52,7 @@ const ProcessTable = ({ processes }) => {
                     {/* Generate table rows using the original order */}
                     {sortedProcesses.map((process, index) => (
                         <tr key={index} className={index < visibleRows ? "show" : ""}>
-                            <td>{process.index}</td>
+                            <td>{process.index + 1}</td>
                             <td>{process.arrivalTime}</td>
                             <td>{process.burstTime}</td>
                             <td>{process.waitingTime}</td>
