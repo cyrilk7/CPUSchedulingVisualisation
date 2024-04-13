@@ -8,6 +8,7 @@ const ProcessTable = ({ processes }) => {
 
 
     // Calculate turnaround times
+    console.log(sortedProcesses, "Sorted Processes");
     let currentTime = sortedProcesses[0].arrivalTime;
     sortedProcesses.forEach(process => {
         process.turnaroundTime = currentTime + process.burstTime - process.arrivalTime;

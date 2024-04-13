@@ -11,41 +11,60 @@ import { useState, useEffect, useRef } from "react";
 const SJN = () => {
     const location = useLocation();
     let processes = location.state?.processes;
+
+    //assigning process ids to the processes
+    for(let i = 0; i < processes.length; i++){
+        processes[i].id = i+1;
+    }
     processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
     let [queue, setQueue] = useState(processes);
-    console.log(processes);
-    console.log(queue[0])
-    
-    
+  
+
+
     //minHeap initialization
     let minHeap = new MinHeap();
-    // minHeap.add(processes[1]);
-    // minHeap.add(processes[0]);
+    let result = [];
+    let time = 0;
+    
 
-    // let [currentProcess, setCurrentProcess] = useState(minHeap.peek());
-    // console.log(currentProcess);
+    let prev_running_process = null;
 
     //algorithm to run SJN
     let clock = 0;
-    while (queue.length > 0 || minHeap.length > 0) {
-        if (queue.length > 0 && queue[0].arrivalTime <= clock) { //if there are processes in the queue and the arrival time of the first process is less than or equal to the clock
+    while (queue.length > 0 || minHeap.length() > 0) {
+        while (queue.length > 0 && queue[0].arrivalTime <= clock) { //if there are processes in the queue and the arrival time of the first process is less than or equal to the clock
             minHeap.add(queue.shift());
-            console.log(minHeap.printHeap());
         }
+
+        // making sure that the minHeap is not empty
+        if (minHeap.length() === 0) {
+            clock++;
+            continue;
+        }
+
+        //get the current process
         let currentProcess = minHeap.peek();
-        console.log(currentProcess)
-        if (minHeap.length>0 && currentProcess.burstTime > 0) {
-            currentProcess.burstTime--;
-            
+        if (currentProcess.id !== prev_running_process && prev_running_process !== null) {
+            result.push({ process: prev_running_process, time: time, clock: clock });
+            prev_running_process = currentProcess.id;
+            time = 1;
+        } else {
+            prev_running_process = currentProcess.id;
+            time++;
         }
-        else if (currentProcess.burstTime === 0) {
+    
+        currentProcess.burstTime--;
+        if (currentProcess.burstTime === 0) {
+            
             minHeap.remove();
         }
 
         clock++;
-        console.log(minHeap.printHeap());
+        minHeap.printHeap();
     }
+    result.push({ process: prev_running_process, time: time, clock: clock });
 
+    console.log(result);
 
 
 

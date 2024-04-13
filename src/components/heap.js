@@ -1,6 +1,7 @@
 export class MinHeap {
     constructor() {
         this.heap = [];
+        
     }
 
     // Helper Methods
@@ -88,6 +89,10 @@ export class MinHeap {
             }
             index = smallerChildIndex;
         }
+    }
+
+    length() {
+        return this.heap.length;
     }
 
     printHeap() {
