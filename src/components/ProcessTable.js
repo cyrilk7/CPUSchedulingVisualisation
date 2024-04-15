@@ -2,7 +2,7 @@ import "../css/processTable.css";
 import { useState, useEffect } from 'react';
 
 
-const ProcessTable = ({ processes }) => {
+const ProcessTable = ({processes} ) => {
 
     const sortedProcesses = processes;
 
@@ -10,7 +10,7 @@ const ProcessTable = ({ processes }) => {
     // Calculate turnaround times
     console.log(sortedProcesses, "Sorted Processes");
     let currentTime = sortedProcesses[0].arrivalTime;
-    sortedProcesses.forEach(process => {
+    sortedProcesses.forEach(process => {  
         process.turnaroundTime = currentTime + process.burstTime - process.arrivalTime;
         currentTime += process.burstTime;
     });
