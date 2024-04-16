@@ -31,7 +31,7 @@ const SJN = () => {
     let minHeap = new MinHeap();
     let result = [];
     let time = 0;
-    let prev_running_process = null;
+    let prev_running_process = { burstTime: 0, arrivalTime: 0, index: null };
 
     //algorithm to run SJN
     let clock = 0;
@@ -50,12 +50,12 @@ const SJN = () => {
         let currentProcess = minHeap.peek();
         
         // if (prev_running_process 1)
-        if (currentProcess.index !== prev_running_process && prev_running_process !== null) {
+        if (currentProcess.index !== prev_running_process.index && prev_running_process.index !== null) {
             result.push({ process: prev_running_process, time: time, clock: clock });
-            prev_running_process = currentProcess.index;
+            prev_running_process = currentProcess;
             time = 1;
         } else {
-            prev_running_process = currentProcess.index;
+            prev_running_process = currentProcess;
             time++;
         }
 
@@ -66,7 +66,7 @@ const SJN = () => {
         }
 
         clock++;
-        completionTimes[currentProcess.index] = clock;
+        completionTimes[currentProcess] = clock;
     }
     result.push({ process: prev_running_process, time: time, clock: clock });
 

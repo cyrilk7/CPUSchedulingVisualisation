@@ -33,7 +33,7 @@ const RR = () => {
     while (queue.length > 0) {
         let currentProcess = { ...queue.shift() };
 
-        currentProcess.ganttEntryTime = clock;
+        // currentProcess.ganttEntryTime = clock;
 
         let executeTime = Math.min(quantum, currentProcess.burstTime);
         currentProcess.executeTime = executeTime;
@@ -47,7 +47,7 @@ const RR = () => {
             let newProcess = { ...currentProcess, arrivalTime: clock };
             queue.push(newProcess);
         } else {
-            completionTimes[currentProcess.id] = clock; // Store completion time for the process
+            completionTimes[currentProcess.index] = clock; // Store completion time for the process
         }
     }
 
@@ -103,7 +103,7 @@ const RR = () => {
             .attr('text-anchor', 'middle') // Center the text horizontally
             .attr('class', 'value')
             .attr('alignment-baseline', 'middle') // Center the text vertically
-            .text((d) => "P" + (d.index + 1)) // Set the initial text content of the label
+            .text((d) => "P" + (d.index)) // Set the initial text content of the label
             .transition()
             .duration(500) // Duration of the transition in milliseconds
             .delay((d, i) => i * 1000) // Delay for each label to create sequential appearance
@@ -186,7 +186,7 @@ const RR = () => {
             .attr('alignment-baseline', 'middle') // Center the text vertically
             .attr('fill', 'black') // Set label color
             .attr('font-weight', 'bold') // Set font weight to bold
-            .text((d) => "P" + (d.index + 1)) // Set the initial text content of the label
+            .text((d) => "P" + (d.index)) // Set the initial text content of the label
             .merge(values)
             .transition()
             .duration(500) // Duration of the transition in milliseconds
