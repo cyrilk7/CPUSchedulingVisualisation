@@ -72,7 +72,7 @@ const FCFS = () => {
             .attr('text-anchor', 'middle') // Center the text horizontally
             .attr('class', 'value')
             .attr('alignment-baseline', 'middle') // Center the text vertically
-            .text((d) => "P" + d.index) // Set the initial text content of the label
+            .text((d) => "P" + (d.index + 1)) // Set the initial text content of the label
             .transition()
             .duration(500) // Duration of the transition in milliseconds
             .delay((d, i) => i * 1000) // Delay for each label to create sequential appearance
@@ -152,7 +152,7 @@ const FCFS = () => {
             .attr('fill', 'black') // Set label color
             .attr('font-weight', 'bold') // Set font weight to bold
             // Start from the right edge of the SVG
-            .text((d) => "P" + d.index) // Set the initial text content of the label
+            .text((d) => "P" + (d.index + 1)) // Set the initial text content of the label
             .merge(values)
             // .attr('x', d => d.xPosition + (gannttXscale(d.burstTime) / 2) ) // Animate to the correct x-position
             .transition()
