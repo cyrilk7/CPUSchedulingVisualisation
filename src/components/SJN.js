@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import ProcessTable from '../components/ProcessTable';
 import "../css/FCFS.css";
 // import { select, scaleLinear } from "d3";
-// import { MinHeap } from './heap';
+import { MinHeap } from './heap';
 import { useState, useEffect, useRef } from "react";
 import useSJNScheduler from '../components/useSJNScheduler';
 
@@ -18,12 +18,57 @@ const SJN = () => {
     for(let i = 0; i < processes.length; i++){
         processes[i].id = i+1;
     }
-    const sorted = processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
-    const schedulingResult = useSJNScheduler(processes);
+    processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
+    let [queue, setQueue] = useState(processes);
+  
+    // console.log(queue);
+
+    //minHeap initialization
+    let minHeap = new MinHeap();
+    let result = [];
+    let time = 0;
     
 
+    let prev_running_process = null;
 
+    //algorithm to run SJN
+    let clock = 0;
+    while (queue.length > 0 || minHeap.length() > 0) {
+        while (queue.length > 0 && queue[0].arrivalTime <= clock) { //if there are processes in the queue and the arrival time of the first process is less than or equal to the clock
+            minHeap.add(queue.shift());
+        }
 
+        // making sure that the minHeap is not empty
+        if (minHeap.length() === 0) {
+            clock++;
+            continue;
+        }
+
+        
+
+        //get the current process
+        let currentProcess = minHeap.peek();
+        if (currentProcess.id !== prev_running_process && prev_running_process !== null) {
+            result.push({ process: prev_running_process, time: time, clock: clock });
+            prev_running_process = currentProcess.id;
+            time = 1;
+        } else {
+            prev_running_process = currentProcess.id;
+            time++;
+        }
+    
+        currentProcess.burstTime--;
+        if (currentProcess.burstTime === 0) {
+            
+            minHeap.remove();
+        }
+
+        clock++;
+        minHeap.printHeap();
+    }
+    result.push({ process: prev_running_process, time: time, clock: clock });
+
+    console.log(result);
 
     return (
         <div className='FCFS-container'>
