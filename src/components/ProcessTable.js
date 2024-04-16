@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 const ProcessTable = ({ processes, compTimes }) => {
     // Clone processes array to avoid modifying the original
-    console.log(compTimes, "ss")
+    // console.log(compTimes, "ss")
     const sortedProcesses = [...processes];
     // console.log(sortedProcesses, "Sorted Processes");
     // console.log(compTimes, "Completion Times");
@@ -47,7 +47,7 @@ const ProcessTable = ({ processes, compTimes }) => {
                         <th>Arrival Time</th>
                         <th>Burst Time</th>
                         <th>Waiting Time</th>
-                        <th>Completion Time</th>
+                        {/* <th>Completion Time</th> */}
                         <th>Turnaround Time</th>
                     </tr>
                 </thead>
@@ -59,7 +59,7 @@ const ProcessTable = ({ processes, compTimes }) => {
                             <td>{process.arrivalTime}</td>
                             <td>{process.burstTime}</td>
                             <td>{process.waitingTime}</td>
-                            <td>{compTimes[process.index]}</td>
+                            {/* <td>{compTimes[process.index]}</td> */}
                             <td>{process.turnaroundTime}</td>
                         </tr>
                     ))}

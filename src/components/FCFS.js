@@ -80,8 +80,6 @@ const FCFS = () => {
 
         // Remove bars that are no longer needed
         values.exit().remove();
-
-
     }
 
     const renderGantt = (data, processes) => {

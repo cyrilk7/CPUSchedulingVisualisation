@@ -33,7 +33,7 @@ const RR = () => {
     while (queue.length > 0) {
         let currentProcess = { ...queue.shift() };
 
-        // currentProcess.ganttEntryTime = clock;
+        currentProcess.ganttEntryTime = clock;
 
         let executeTime = Math.min(quantum, currentProcess.burstTime);
         currentProcess.executeTime = executeTime;
