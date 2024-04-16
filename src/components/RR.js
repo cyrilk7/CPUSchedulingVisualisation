@@ -9,7 +9,7 @@ const RR = () => {
     let myProcesses = location.state?.processes;
 
     // Assigning process ids to the processes
-    const updatedProcesses = myProcesses.map((process, index) => ({ ...process, index }));
+    const updatedProcesses = myProcesses.map((process, index) => ({ ...process, index: index + 1 }));
 
     const sortedProcesses = updatedProcesses.sort((a, b) => a.arrivalTime - b.arrivalTime);
     const [processes, setProcesses] = useState(sortedProcesses);
