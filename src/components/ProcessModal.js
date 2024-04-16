@@ -8,13 +8,24 @@ function ProcesssModal(props) {
     const [show, setShow] = useState(true);
     const { onClose, redirectPage } = props;
     const [numProcesses, setNumProcesses] = useState(1);
+    const [quantum, setQuantum] = useState(1);
     const [processes, setProcesses] = useState([{ arrivalTime: 0, burstTime: 0 }]);
+    const [showInputField, setShowInputField] = useState(false);
     const navigate = useNavigate();
+
+
+
 
     const handleNumProcessesChange = (e) => {
         const num = parseInt(e.target.value);
         setNumProcesses(num);
         setProcesses(Array(num).fill().map(() => ({ burstTime: 0, arrivalTime: 0 })));
+    };
+
+
+    const handleQuantumChange = (e) => {
+        const num = parseInt(e.target.value);
+        setNumProcesses(num);
     };
 
     const handleBurstTimeChange = (e, index) => {
@@ -71,6 +82,19 @@ function ProcesssModal(props) {
                         }}
                         onChange={handleNumProcessesChange}
                     />
+
+                    {showInputField && (
+                        <input
+                            className='modal-input'
+                            type="number"
+                            value={quantum}
+                            min="1"
+                            onKeyDown={(e) => {
+                                if (e.key === 'Backspace') e.preventDefault();
+                            }}
+                            onChange={handleQuantumChange}
+                        />
+                    )}
                     {Array.from({ length: numProcesses }).map((_, index) => (
                         <div key={index}>
                             <label className='modal-label'>

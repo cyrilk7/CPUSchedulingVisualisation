@@ -19,6 +19,8 @@ const LandingPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [currentAlgorithm, setCurrentAlgorithm] = useState(null);
 
+    
+
 
     const handleModalOpen = (process) => {
         setCurrentAlgorithm(process);

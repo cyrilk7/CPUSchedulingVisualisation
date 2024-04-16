@@ -84,16 +84,16 @@ const SJN = () => {
         }
 
         clock++;
-        completionTimes[currentProcess] = clock;
+        completionTimes[currentProcess.index] = clock;
     }
 
 
     let newProcess = { ...prev_running_process, executeTime: time, arrivalTime: prev_clock };
     result.push({ process: newProcess, time: time, clock: clock });
 
-    console.log(result);
+    // console.log(result);
     console.log(completionTimes);
-    console.log(processes, "Processes");
+    // console.log(processes, "Processes");
 
     const copiedResult = [...result];
 
@@ -230,7 +230,7 @@ const SJN = () => {
 
         let cumulativeX = 0;
         data.forEach((d, i) => {
-            console.log(d.executeTime)
+            // console.log(d.executeTime)
             d.xPosition = cumulativeX;
             cumulativeX += gannttXscale(d.executeTime); // Increase cumulative position by the width of the current bar
         });

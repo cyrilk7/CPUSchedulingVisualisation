@@ -298,6 +298,7 @@ const RR = () => {
                 </div>
                 <div className="FCFS-top-right">
                     <h2 className='timer'>Timer:  <span> {seconds} seconds </span> </h2>
+                    <h2 className='timer'>Quantum Time:  <span> {quantum} </span> </h2>
                     <h4> Ready Queue </h4>
                     <div className="queue-container">
                         <svg ref={svgRef} className="queue" width="700" height="150"></svg>
