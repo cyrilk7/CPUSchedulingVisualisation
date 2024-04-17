@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# CPU Scheduling Visualization Tool
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+This project is a CPU scheduling visualization tool built using React and D3.js. It provides an interactive interface to visualize various CPU scheduling algorithms. The backend code is written in JavaScript. 
 
-## Available Scripts
+You can access a youtube video of a demo [here](https://www.youtube.com/watch?v=yxLUkck-Xok)
 
-In the project directory, you can run:
+## Deployment
+The project is deployed on Vercel. You can access it [here](https://cpu-scheduling-visualisation.vercel.app/).
 
-### `npm start`
+## Features
+- **Landing Page:** Upon visiting the deployed link, users are directed to the landing page where they can explore the available CPU scheduling algorithms.
+- **Available Algorithms:** Four CPU scheduling algorithms are provided:
+  1. First Come First Serve
+  2. Shortest Job Next
+  3. Round Robin
+  4. Multi-Level Feedback Queue (MLFQ)
+- **Modal Input:** Upon selecting an algorithm, a modal appears where users can input the number of processes, arrival times, and burst times for each process.
+- **Error Handling:** The system handles the following errors:
+  1. Users cannot enter a number of processes less than 1.
+  2. Users cannot enter burst times or arrival times less than or equal to 0.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Usage
+1. Visit the [deployed link](https://cpu-scheduling-visualisation.vercel.app/).
+2. Scroll down or click the "Get Started" button to view the available CPU scheduling algorithms.
+3. Select an algorithm to visualize.
+4. Input the number of processes, arrival times, and burst times for each process in the modal.
+5. Click "Submit" to visualize the scheduling.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used
+- React
+- D3.js
+- JavaScript (Backend)
+- Bootstrap
+- React Bootstrap
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Contact
+This is a collaborative project coded by Abigail Animah Owusu and Cyril Kujar.
+If you have any questions or suggestions, feel free to contact us at [abigailowusu296@gmail.com](mailto:your-email@example.com) or [cyrilkujar@gmail.com](mailto:your-email@example.com) .

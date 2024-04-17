@@ -1,0 +1,43 @@
+/* queues.css */
+
+/* Style for the container holding all queues */
+.queue-container {
+    display: flex;
+    gap: 20px;
+    /* Adjust the gap between queues as needed */
+}
+
+/* Style for each queue */
+.queued {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 200px;
+    /* Adjust the width of each queue as needed */
+}
+
+/* Style for the queue title */
+.queued h3 {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* Style for the list of processes within each queue */
+.queued ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Style for each process item */
+.queued li {
+    margin-bottom: 5px;
+    font-size: 1em;
+    color: #666;
+}
+
+/* Optional: Add hover effect for better interactivity */
+.queued:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}

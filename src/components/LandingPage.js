@@ -12,7 +12,7 @@ const redirectMap = {
     FCFS: "/fcfs",
     SJN: "/sjn",
     RR: "/rr",
-    MLF: "/MLF"
+    MLFQ: "/mlfq"
 };
 
 const LandingPage = () => {
@@ -64,7 +64,7 @@ const LandingPage = () => {
                         Round Robin
                     </Button>
 
-                    <Button variant="primary" onClick={() => handleModalOpen("MLF")}>
+                    <Button variant="primary" onClick={() => handleModalOpen("MLFQ")}>
                         MLF
                     </Button>
 
